@@ -16,6 +16,7 @@ public abstract class Unit extends Entity {
 	}
 	
 	protected void move(float delta, Vector2 destination){
+		if(destination == null) return;
 		Vector2 currentPosition = super.getPosition();
 		float movementSpeed = speed * delta;
 		if(currentPosition.x < destination.x){

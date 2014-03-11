@@ -20,6 +20,18 @@ public abstract class Entity implements Serializable {
 	public Entity(Vector2 position) {
 		this.position = position;
 	}
+	
+	public Entity(Vector2 position, int tileWidth, int tileHeight){
+		this.position = position;
+		this.width = tileWidth;
+		this.height = tileHeight;
+	}
+	
+	public Vector2 getCenter(){
+		return new Vector2(
+				this.position.x + (width / 2),
+				this.position.y + (height / 2));
+	}
 
 	public float getWidth() {
 		return width;
@@ -37,7 +49,7 @@ public abstract class Entity implements Serializable {
 		this.height = height;
 	}
 
-	protected Vector2 getPosition() {
+	public Vector2 getPosition() {
 		return this.position;
 	}
 
