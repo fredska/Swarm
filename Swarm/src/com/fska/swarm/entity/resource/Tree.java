@@ -11,7 +11,7 @@ public class Tree extends Resource {
 
 	private TextureRegion treeTexture;
 	public Tree(Vector2 position) {
-		super(position, 2);
+		super(position, 1, 4f);
 		treeTexture = new TextureRegion(new Texture(Gdx.files.internal("units/Tree_1.png")));
 		
 	}

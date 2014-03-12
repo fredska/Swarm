@@ -7,7 +7,7 @@ import com.fska.swarm.entity.Resource;
 public class Stone extends Resource {
 
 	public Stone(Vector2 position) {
-		super(position, 3);
+		super(position, 3, 5);
 	}
 
 	@Override

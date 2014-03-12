@@ -7,7 +7,7 @@ import com.fska.swarm.entity.Resource;
 public class Food extends Resource {
 
 	public Food(Vector2 position) {
-		super(position, 1);
+		super(position, 1, 2);
 	}
 
 	@Override

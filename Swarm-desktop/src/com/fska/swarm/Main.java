@@ -8,8 +8,8 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "Swarm";
 		cfg.useGL20 = false;
-		cfg.width = 400;
-		cfg.height = 300;
+		cfg.width = 1024;
+		cfg.height = 768;
 		
 		new LwjglApplication(new Swarm(), cfg);
 	}

@@ -1,6 +1,5 @@
 package com.fska.swarm.screens;
 
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,24 +8,19 @@ import java.util.TreeSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.fska.swarm.entity.Entity;
-import com.fska.swarm.entity.Resource;
 import com.fska.swarm.entity.resource.Tree;
 import com.fska.swarm.entity.unit.Gatherer;
 import com.fska.swarm.map.MapData;
-import com.sun.xml.internal.ws.api.streaming.XMLStreamReaderFactory.Woodstox;
 
 public class GameScreen implements Screen {
 
 	private Set<Gatherer> gatherers;
-	private ShapeRenderer renderer;
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	private SortedSet<Entity> entities;
@@ -54,7 +48,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-
+		
 	}
 
 	@Override
@@ -64,24 +58,23 @@ public class GameScreen implements Screen {
 		Vector2 startPosition = new Vector2(MathUtils.random(width),
 				MathUtils.random(height));
 		gatherers = new HashSet<Gatherer>();
-		for (int i = 0; i < 200; i++) {
+		for (int i = 0; i < 750; i++) {
 			startPosition = new Vector2(MathUtils.random(width),
 					MathUtils.random(height));
-			gatherers.add(new Gatherer(startPosition, 100, 25));
+			gatherers.add(new Gatherer(startPosition, 100, 55));
 		}
 		batch = new SpriteBatch();
 		batch.enableBlending();
 		camera = new OrthographicCamera(width, height);
-		camera.position.set(width / 2, height / 2, 0);
-		camera.zoom = 1.5f;
-		renderer = new ShapeRenderer();
+		camera.zoom = 1.75f;
+		camera.position.set(width  / 2f, height / 2f, 0);
 
 		// Initialize the mapData object and add some trees :)
 		MapData mapData = MapData.getInstance();
-		for (int i = 0; i < 500; i++) {
-			Tree woodTree = new Tree(new Vector2(MathUtils.random(Gdx.graphics
-					.getWidth() * camera.zoom), MathUtils.random(Gdx.graphics
-					.getHeight() * camera.zoom)));
+		for (int i = 0; i < 1500; i++) {
+			Tree woodTree = new Tree(
+					new Vector2(MathUtils.random(width*1.5f) - width * 0.25f
+							, MathUtils.random(height*1.5f) - height * 0.25f));
 			mapData.getResources().add(woodTree);
 		}
 

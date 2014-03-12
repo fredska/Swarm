@@ -8,26 +8,35 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.fska.swarm.common.Common;
-import com.fska.swarm.entity.Building;
 import com.fska.swarm.entity.Resource;
 import com.fska.swarm.entity.Unit;
 import com.fska.swarm.entity.building.TownHall;
 import com.fska.swarm.map.MapData;
 
+/**
+ * Basic Gathering Unit
+ * Actions:  Move, Sleep, Harvest, Build, Haul, Eat
+ * @author fskallos
+ *
+ */
 public class Gatherer extends Unit {
 
 	enum Status {
-		MOVING, HARVESTING, HAULING, WAITING, SLEEPING
+		MOVE, WAIT, SLEEP, WORKING
+		}
+	
+	enum Action {
+		HARVEST, HAUL, BUILD
 	}
 
 	private Texture texture;
 	private TextureRegion textureRegion;
-	private Vector2 target;
-	private Status status;
+	private Vector2 destination;
+	private Status currentStatus;
+	private Action action;
 	private float timeToWait = 0f;
 	private float walkingDuration = 0f;
 	private TownHall myTownHall;
-	private float maxLazyDistanceFromTownHall;
 	private Animation walkAnimation;
 	private Resource targetResource;
 	private Resource hauledResource;
@@ -41,14 +50,83 @@ public class Gatherer extends Unit {
 				frames[0][2]);
 		walkAnimation.setPlayMode(Animation.LOOP_PINGPONG);
 		System.out.println(frames.length + " :: " + frames[0].length);
-		status = Status.WAITING;
+		currentStatus = Status.WAIT;
 		myTownHall = new TownHall(new Vector2(Gdx.graphics.getWidth() / 2,
 				Gdx.graphics.getHeight() / 2));
-		maxLazyDistanceFromTownHall = 100f;
 	}
-
+	
+	//This method provides basic AI.  Ideally this will be refactored into it's own class, but for now
+	// there isn't much point in doing so.
 	@Override
 	public void update() {
+		switch(currentStatus){
+		case MOVE:
+			if(!hasReachedTarget()){
+				move(Gdx.graphics.getDeltaTime(), this.destination);
+				walkingDuration += Gdx.graphics.getDeltaTime();
+				textureRegion = walkAnimation.getKeyFrame(walkingDuration, true);
+				return;
+			} else {
+				walkingDuration = 0f;
+				currentStatus = Status.WORKING;
+				if(action == Action.HARVEST){
+					destination = null;
+				}
+				if(action == Action.HAUL){
+					hauledResource = null;
+					destination = null;
+					currentStatus = Status.WAIT;
+					timeToWait = 0.75f;
+					action = null;
+				}
+			}
+			break;
+		case WORKING:
+			if(action == Action.HARVEST){
+				if(targetResource == null){
+					currentStatus = Status.MOVE;
+					destination = findRandomSpot();
+					return;
+				}
+				if(!targetResource.harvest(Gdx.graphics.getDeltaTime())){
+					if(MapData.getInstance().getResources().remove(targetResource)){
+						this.destination = returnToNearestStockpile(targetResource);
+						currentStatus = Status.MOVE;
+						action = Action.HAUL;
+					} else {
+						action = null;
+						currentStatus = Status.WAIT;
+						timeToWait = 0.5f;
+					}
+					hauledResource = targetResource;
+					targetResource = null;
+				}
+			}
+			break;
+		case SLEEP:
+			currentStatus = Status.WAIT;
+			break;
+		case WAIT:
+			if(timeToWait <= 0f){
+				//Get a new action
+				//Setup a priority system here, but for now just gather resources
+				currentStatus = Status.MOVE;
+				action = Action.HARVEST;
+				targetResource = findNearestResource();
+				if(targetResource != null){
+					targetResource.assignToResource(this);
+					this.destination = targetResource.getCenter();
+				}
+			} else {
+				timeToWait -= Gdx.graphics.getDeltaTime();
+				textureRegion = walkAnimation.getKeyFrame(0.15f);
+			}
+			break;
+		//Default to Wait
+		default:
+			currentStatus = Status.WAIT;
+		}
+		/*
 		//If the gatherer has reached their target:
 		//VALID TARGETS:
 		// Resource, Haul drop off
@@ -57,7 +135,21 @@ public class Gatherer extends Unit {
 			// If target is a resource drop-off, set status to Waiting
 			// If target is a bed, set status to Sleeping
 			switch (status) {
-			case HAULING:
+			case HARVEST:
+				if(!targetResource.harvest(Gdx.graphics.getDeltaTime())){
+					if(MapData.getInstance().getResources().remove(targetResource)){
+						hauledResource = targetResource;
+						targetResource = null;
+						status = Status.HAUL;
+						target = myTownHall.getCenter();
+					} else {
+						targetResource = null;
+						status = Status.WAIT;
+						timeToWait = MathUtils.random(0.5f) + 0.25f;
+					}
+				}
+				break;
+			case HAUL:
 				// Remove the resource and add it to the stockpile
 				hauledResource = null;
 				break;
@@ -69,12 +161,13 @@ public class Gatherer extends Unit {
 					this.target = new Vector2(0, 0);
 				} else
 					this.target = myTownHall.getCenter();
-				status = Status.HAULING;
+				status = Status.HAUL;
 			}
 			if (targetResource != null) {
 				this.target = targetResource.getCenter();
-				status = Status.HARVESTING;
-				
+				status = Status.HARVEST;
+				target = null;
+				return;
 			}
 			if (targetResource == null) {
 				targetResource = findNearestResource();
@@ -87,14 +180,14 @@ public class Gatherer extends Unit {
 				this.target = findRandomSpot();
 			}
 			
-			status = Status.WAITING;
+			status = Status.WAIT;
 			timeToWait = MathUtils.random(0.25f) + 0.25f;
 		}
 		if (timeToWait > 0f) {
-			if(status == Status.WAITING){
+			if(status == Status.WAIT){
 				textureRegion = walkAnimation.getKeyFrame(0.15f);
 			}
-			if(status == Status.HARVESTING){
+			if(status == Status.HARVEST){
 				//Harvesting Animation goes here
 			}
 			walkingDuration = 0f;
@@ -104,8 +197,20 @@ public class Gatherer extends Unit {
 			move(Gdx.graphics.getDeltaTime(), this.target);
 			walkingDuration += Gdx.graphics.getDeltaTime();
 			textureRegion = walkAnimation.getKeyFrame(walkingDuration, true);
-			status = Status.MOVING;
+			status = Status.MOVE;
 		}
+		*/
+	}
+	
+	/**
+	 * Returns the nearest drop off for the given resource type
+	 * For now, this is just the town Hall, if one is available
+	 * @return
+	 */
+	public Vector2 returnToNearestStockpile(Resource resource){
+		if(myTownHall == null)
+			return new Vector2(0,0);
+		return myTownHall.getCenter();
 	}
 
 	public Vector2 findRandomSpot() {
@@ -146,9 +251,9 @@ public class Gatherer extends Unit {
 	}
 
 	private boolean hasReachedTarget() {
-		if (target == null)
+		if (destination == null)
 			return true;
-		return target.dst2(super.getPosition()) < 1;
+		return destination.dst2(super.getPosition()) < 1;
 	}
 
 	@Override
