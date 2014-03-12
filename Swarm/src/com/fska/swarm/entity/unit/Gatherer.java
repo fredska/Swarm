@@ -73,9 +73,12 @@ public class Gatherer extends Unit {
 			}
 			if (targetResource != null) {
 				this.target = targetResource.getCenter();
+				status = Status.HARVESTING;
+				
 			}
 			if (targetResource == null) {
 				targetResource = findNearestResource();
+				targetResource.canGatherResource(this);
 			}
 
 			
@@ -125,6 +128,7 @@ public class Gatherer extends Unit {
 		Resource nearestResource = null;
 		float distanceToCurrentResource = 0f;
 		for (Resource resource : MapData.getInstance().getResources()) {
+			if(resource.isResourceMaxed()) continue;
 			if (resource.getCenter().dst2(getCenter()) < 4000000) {
 				if (nearestResource == null) {
 					nearestResource = resource;

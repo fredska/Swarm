@@ -33,6 +33,10 @@ public abstract class Resource extends Entity {
 		return assignedGatherers.contains(gatherer);
 	}
 	
+	public boolean isResourceMaxed(){
+		return assignedGatherers.size() == maxConcurrentGatherers;
+	}
+	
 	public abstract void draw(Batch batch);
 	public abstract void update();
 
