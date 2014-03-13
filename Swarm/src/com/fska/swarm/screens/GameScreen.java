@@ -13,7 +13,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.fska.swarm.entity.Building;
 import com.fska.swarm.entity.Entity;
+import com.fska.swarm.entity.building.TownHall;
 import com.fska.swarm.entity.resource.Tree;
 import com.fska.swarm.entity.unit.Gatherer;
 import com.fska.swarm.map.MapData;
@@ -32,6 +34,7 @@ public class GameScreen implements Screen {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		entities.clear();
+		entities.addAll(MapData.getInstance().getBuildings());
 		entities.addAll(MapData.getInstance().getResources());
 		entities.addAll(gatherers);
 
@@ -55,26 +58,36 @@ public class GameScreen implements Screen {
 	public void show() {
 		final int width = Gdx.graphics.getWidth();
 		final int height = Gdx.graphics.getHeight();
-		Vector2 startPosition = new Vector2(MathUtils.random(width),
-				MathUtils.random(height));
+		
+		//Create a town hall or two :)
+		Set<Building> initialBuildings = MapData.getInstance().getBuildings();
+		TownHall player1TownHall = new TownHall(new Vector2(width * 0.9f, height * 0.8f));
+		TownHall player2TownHall = new TownHall(new Vector2(width * 0.1f, height * 0.2f));
+		initialBuildings.add(player1TownHall);
+		initialBuildings.add(player2TownHall);
+		
 		gatherers = new HashSet<Gatherer>();
-		for (int i = 0; i < 750; i++) {
-			startPosition = new Vector2(MathUtils.random(width),
-					MathUtils.random(height));
-			gatherers.add(new Gatherer(startPosition, 100, 55));
+		final float gathererSpeed = 75;
+		for (int i = 0; i < 20; i++) {
+			if(MathUtils.randomBoolean()){
+				gatherers.add(new Gatherer(player1TownHall.getCenter(), 100, gathererSpeed, player1TownHall));
+			}
+			else {
+				gatherers.add(new Gatherer(player2TownHall.getCenter(), 100, gathererSpeed, player2TownHall));
+			}
 		}
 		batch = new SpriteBatch();
 		batch.enableBlending();
 		camera = new OrthographicCamera(width, height);
-		camera.zoom = 1.75f;
+		camera.zoom = 2f;
 		camera.position.set(width  / 2f, height / 2f, 0);
 
 		// Initialize the mapData object and add some trees :)
 		MapData mapData = MapData.getInstance();
-		for (int i = 0; i < 1500; i++) {
+		for (int i = 0; i < 150; i++) {
 			Tree woodTree = new Tree(
-					new Vector2(MathUtils.random(width*1.5f) - width * 0.25f
-							, MathUtils.random(height*1.5f) - height * 0.25f));
+					new Vector2(MathUtils.random(width*camera.zoom) - width * (camera.zoom / 4f)
+							, MathUtils.random(height*camera.zoom) - height * (camera.zoom / 4f)));
 			mapData.getResources().add(woodTree);
 		}
 

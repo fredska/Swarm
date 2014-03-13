@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.fska.swarm.common.Common;
 import com.fska.swarm.entity.Resource;
@@ -42,6 +44,7 @@ public class Gatherer extends Unit {
 	private Resource hauledResource;
 
 	public Gatherer(Vector2 position, float maxHealth, float speed) {
+		
 		super(position, maxHealth, speed);
 		texture = new Texture(Gdx.files.internal("units/Gatherer_1.png"));
 		TextureRegion[][] frames = TextureRegion.split(texture, 32, 32);
@@ -49,10 +52,15 @@ public class Gatherer extends Unit {
 		walkAnimation = new Animation(0.1f, frames[0][0], frames[0][1],
 				frames[0][2]);
 		walkAnimation.setPlayMode(Animation.LOOP_PINGPONG);
-		System.out.println(frames.length + " :: " + frames[0].length);
 		currentStatus = Status.WAIT;
 		myTownHall = new TownHall(new Vector2(Gdx.graphics.getWidth() / 2,
 				Gdx.graphics.getHeight() / 2));
+	}
+	
+	//Extend the above constructor, useful if I have a town hall to assign!
+	public Gatherer(Vector2 position, float maxHealth, float speed, TownHall myTownHall) {
+		this(position, maxHealth, speed);
+		this.myTownHall = myTownHall;
 	}
 	
 	//This method provides basic AI.  Ideally this will be refactored into it's own class, but for now
@@ -91,6 +99,7 @@ public class Gatherer extends Unit {
 				if(!targetResource.harvest(Gdx.graphics.getDeltaTime())){
 					if(MapData.getInstance().getResources().remove(targetResource)){
 						this.destination = returnToNearestStockpile(targetResource);
+						hauledResource = targetResource;
 						currentStatus = Status.MOVE;
 						action = Action.HAUL;
 					} else {
@@ -126,80 +135,6 @@ public class Gatherer extends Unit {
 		default:
 			currentStatus = Status.WAIT;
 		}
-		/*
-		//If the gatherer has reached their target:
-		//VALID TARGETS:
-		// Resource, Haul drop off
-		if (hasReachedTarget()) {
-			// If target reached is a Resource, set status to Gathering
-			// If target is a resource drop-off, set status to Waiting
-			// If target is a bed, set status to Sleeping
-			switch (status) {
-			case HARVEST:
-				if(!targetResource.harvest(Gdx.graphics.getDeltaTime())){
-					if(MapData.getInstance().getResources().remove(targetResource)){
-						hauledResource = targetResource;
-						targetResource = null;
-						status = Status.HAUL;
-						target = myTownHall.getCenter();
-					} else {
-						targetResource = null;
-						status = Status.WAIT;
-						timeToWait = MathUtils.random(0.5f) + 0.25f;
-					}
-				}
-				break;
-			case HAUL:
-				// Remove the resource and add it to the stockpile
-				hauledResource = null;
-				break;
-			default:
-			}
-
-			if (hauledResource != null) {
-				if (myTownHall == null) {
-					this.target = new Vector2(0, 0);
-				} else
-					this.target = myTownHall.getCenter();
-				status = Status.HAUL;
-			}
-			if (targetResource != null) {
-				this.target = targetResource.getCenter();
-				status = Status.HARVEST;
-				target = null;
-				return;
-			}
-			if (targetResource == null) {
-				targetResource = findNearestResource();
-				targetResource.canGatherResource(this);
-			}
-
-			
-			// For now, only actions are lazily walking around
-			if (this.target == null) {
-				this.target = findRandomSpot();
-			}
-			
-			status = Status.WAIT;
-			timeToWait = MathUtils.random(0.25f) + 0.25f;
-		}
-		if (timeToWait > 0f) {
-			if(status == Status.WAIT){
-				textureRegion = walkAnimation.getKeyFrame(0.15f);
-			}
-			if(status == Status.HARVEST){
-				//Harvesting Animation goes here
-			}
-			walkingDuration = 0f;
-			timeToWait -= Gdx.graphics.getDeltaTime();
-			return;
-		} else {
-			move(Gdx.graphics.getDeltaTime(), this.target);
-			walkingDuration += Gdx.graphics.getDeltaTime();
-			textureRegion = walkAnimation.getKeyFrame(walkingDuration, true);
-			status = Status.MOVE;
-		}
-		*/
 	}
 	
 	/**
