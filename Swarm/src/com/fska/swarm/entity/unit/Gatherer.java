@@ -14,6 +14,7 @@ import com.fska.swarm.entity.Resource;
 import com.fska.swarm.entity.Unit;
 import com.fska.swarm.entity.building.TownHall;
 import com.fska.swarm.map.MapData;
+import com.fska.swarm.player.Player;
 
 /**
  * Basic Gathering Unit
@@ -81,11 +82,15 @@ public class Gatherer extends Unit {
 					destination = null;
 				}
 				if(action == Action.HAUL){
+					//Add the resource to the stockpile
+					Player.getPlayers().get(1).addResource(hauledResource.getType());
+					//Now remove it from the gatherer and put it into a WAIT state
 					hauledResource = null;
 					destination = null;
 					currentStatus = Status.WAIT;
 					timeToWait = 0.75f;
 					action = null;
+					
 				}
 			}
 			break;

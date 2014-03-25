@@ -9,10 +9,16 @@ import com.fska.swarm.entity.unit.Gatherer;
 
 public abstract class Resource extends Entity {
 
+	public static enum ResourceType{
+		Stone, Food, Wood, Water
+	};
+	
 	private int maxConcurrentGatherers;
 	private Set<Gatherer> assignedGatherers;
 	private float timeToHarvest; 
-	public Resource(Vector2 position, int maxConcurrentGatherers, float timeToHarvest){
+	private ResourceType resourceType;
+	public Resource(Vector2 position, int maxConcurrentGatherers, float timeToHarvest,
+				ResourceType resourceType){
 		super(position);
 		//The minimum number of gatherers at a resource is 1
 		if(maxConcurrentGatherers >= 1)
@@ -21,6 +27,7 @@ public abstract class Resource extends Entity {
 			this.maxConcurrentGatherers = 1;
 		assignedGatherers = new HashSet<Gatherer>();
 		this.timeToHarvest = timeToHarvest;
+		this.resourceType = resourceType;
 	}
 	
 	public boolean canGatherResource(Gatherer gatherer){
@@ -54,6 +61,10 @@ public abstract class Resource extends Entity {
 			timeToHarvest -= delta * ((1f / assignedGatherers.size()) + 0.15f);
 		}
 		return true;
+	}
+	
+	public ResourceType getType(){
+		return this.resourceType;
 	}
 	
 	public abstract void draw(Batch batch);

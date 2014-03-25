@@ -8,17 +8,24 @@ import java.util.TreeSet;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.fska.swarm.entity.Building;
 import com.fska.swarm.entity.Entity;
+import com.fska.swarm.entity.Resource.ResourceType;
 import com.fska.swarm.entity.building.TownHall;
 import com.fska.swarm.entity.resource.Tree;
 import com.fska.swarm.entity.unit.Gatherer;
 import com.fska.swarm.map.MapData;
+import com.fska.swarm.player.Player;
 
 public class GameScreen implements Screen {
 
@@ -26,6 +33,10 @@ public class GameScreen implements Screen {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	private SortedSet<Entity> entities;
+	
+	/* UI Parameters */
+	private Stage resourceStage;
+	private Label woodCountLabel;
 
 	@Override
 	public void render(float delta) {
@@ -46,7 +57,9 @@ public class GameScreen implements Screen {
 			entity.draw(batch);
 		}
 		batch.end();
-
+		woodCountLabel.setText(Integer.toString(Player.getPlayers().get(1).getResourceCount(ResourceType.Wood)));
+		resourceStage.act(delta);
+		resourceStage.draw();
 	}
 
 	@Override
@@ -103,7 +116,27 @@ public class GameScreen implements Screen {
 				return 0;
 			}
 		});
-
+		
+		//Create a new player & fill out some data on them
+		Player player1 = new Player(1, Color.BLUE);
+		
+		setupUIStage();
+	}
+	
+	private void setupUIStage(){
+		resourceStage = new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),false);
+		Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+		
+		Table resourceTable = new Table(skin);
+		woodCountLabel = new Label(Integer.toString(Player.getPlayers().get(1).getResourceCount(ResourceType.Wood)),
+				skin);
+		resourceTable.add("--- Resources ---");
+		resourceTable.row();
+		resourceTable.add("Wood ");
+		resourceTable.add(woodCountLabel);
+		Table.drawDebug(resourceStage);
+		resourceTable.setPosition(100, Gdx.graphics.getHeight()- 50);
+		resourceStage.addActor(resourceTable);
 	}
 
 	@Override
