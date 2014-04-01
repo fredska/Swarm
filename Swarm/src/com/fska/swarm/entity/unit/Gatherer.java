@@ -24,19 +24,9 @@ import com.fska.swarm.player.Player;
  */
 public class Gatherer extends Unit {
 
-	enum Status {
-		MOVE, WAIT, SLEEP, WORKING
-		}
-	
-	enum Action {
-		HARVEST, HAUL, BUILD
-	}
-
 	private Texture texture;
 	private TextureRegion textureRegion;
 	private Vector2 destination;
-	private Status currentStatus;
-	private Action action;
 	private float timeToWait = 0f;
 	private float walkingDuration = 0f;
 	private TownHall myTownHall;
@@ -53,7 +43,7 @@ public class Gatherer extends Unit {
 		walkAnimation = new Animation(0.1f, frames[0][0], frames[0][1],
 				frames[0][2]);
 		walkAnimation.setPlayMode(Animation.LOOP_PINGPONG);
-		currentStatus = Status.WAIT;
+		status = Status.WAIT;
 		myTownHall = new TownHall(new Vector2(Gdx.graphics.getWidth() / 2,
 				Gdx.graphics.getHeight() / 2));
 	}
@@ -68,7 +58,7 @@ public class Gatherer extends Unit {
 	// there isn't much point in doing so.
 	@Override
 	public void update() {
-		switch(currentStatus){
+		switch(status){
 		case MOVE:
 			if(!hasReachedTarget()){
 				move(Gdx.graphics.getDeltaTime(), this.destination);
@@ -77,7 +67,7 @@ public class Gatherer extends Unit {
 				return;
 			} else {
 				walkingDuration = 0f;
-				currentStatus = Status.WORKING;
+				status = Status.WORKING;
 				if(action == Action.HARVEST){
 					destination = null;
 				}
@@ -87,7 +77,7 @@ public class Gatherer extends Unit {
 					//Now remove it from the gatherer and put it into a WAIT state
 					hauledResource = null;
 					destination = null;
-					currentStatus = Status.WAIT;
+					status = Status.WAIT;
 					timeToWait = 0.75f;
 					action = null;
 					
@@ -97,7 +87,7 @@ public class Gatherer extends Unit {
 		case WORKING:
 			if(action == Action.HARVEST){
 				if(targetResource == null){
-					currentStatus = Status.MOVE;
+					status = Status.MOVE;
 					destination = findRandomSpot();
 					return;
 				}
@@ -105,11 +95,11 @@ public class Gatherer extends Unit {
 					if(MapData.getInstance().getResources().remove(targetResource)){
 						this.destination = returnToNearestStockpile(targetResource);
 						hauledResource = targetResource;
-						currentStatus = Status.MOVE;
+						status = Status.MOVE;
 						action = Action.HAUL;
 					} else {
 						action = null;
-						currentStatus = Status.WAIT;
+						status = Status.WAIT;
 						timeToWait = 0.5f;
 					}
 					hauledResource = targetResource;
@@ -118,13 +108,13 @@ public class Gatherer extends Unit {
 			}
 			break;
 		case SLEEP:
-			currentStatus = Status.WAIT;
+			status = Status.WAIT;
 			break;
 		case WAIT:
 			if(timeToWait <= 0f){
 				//Get a new action
 				//Setup a priority system here, but for now just gather resources
-				currentStatus = Status.MOVE;
+				status = Status.MOVE;
 				action = Action.HARVEST;
 				targetResource = findNearestResource();
 				if(targetResource != null){
@@ -138,7 +128,7 @@ public class Gatherer extends Unit {
 			break;
 		//Default to Wait
 		default:
-			currentStatus = Status.WAIT;
+			status = Status.WAIT;
 		}
 	}
 	

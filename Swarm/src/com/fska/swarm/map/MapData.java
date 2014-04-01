@@ -3,6 +3,8 @@ package com.fska.swarm.map;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.fska.swarm.entity.Building;
 import com.fska.swarm.entity.Resource;
 
@@ -19,6 +21,8 @@ public class MapData{
 	private Set<Resource> resources;
 	private Set<Building> buildings;
 	
+	private TiledMap tiledMap;
+	
 	public static MapData getInstance(){
 		if(mapDataInstance == null){
 			mapDataInstance = new MapData();
@@ -26,6 +30,12 @@ public class MapData{
 			mapDataInstance.buildings = new HashSet<Building>();
 		}
 		return mapDataInstance;
+	}
+	
+	public MapData(){
+		tiledMap = new TiledMap();
+		TmxMapLoader loader = new TmxMapLoader();
+		
 	}
 	
 	public Set<Resource> getResources(){
