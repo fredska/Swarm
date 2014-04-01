@@ -3,7 +3,11 @@ package com.fska.swarm.map;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.fska.swarm.entity.Building;
 import com.fska.swarm.entity.Resource;
@@ -33,9 +37,17 @@ public class MapData{
 	}
 	
 	public MapData(){
+		Texture.setEnforcePotImages(false);
 		tiledMap = new TiledMap();
 		TmxMapLoader loader = new TmxMapLoader();
-		
+		tiledMap = loader.load("tmx/Test_Map_2_Layer.tmx");
+	}
+	
+	public TiledMap getTiledMap(){
+		return this.tiledMap;
+	}
+	
+	public void draw(Batch batch){
 	}
 	
 	public Set<Resource> getResources(){

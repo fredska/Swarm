@@ -28,11 +28,4 @@
    eJzt0bEJACEQRFGvAuONjY3tvzMR9lq4W+Q9mHzgtwYAAADcqD9/P+B1WpyFJmVE9hialDGyx9SkjJk9liZlLD0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAzG+u0Ah0=
   </data>
  </layer>
- <objectgroup name="TreeLayer_Object" width="100" height="100">
-  <object gid="311" x="951" y="315"/>
-  <object gid="301" x="920" y="283"/>
-  <object gid="291" x="888" y="251"/>
-  <object gid="281" x="856" y="220"/>
-  <object gid="271" x="826" y="190"/>
- </objectgroup>
 </map>

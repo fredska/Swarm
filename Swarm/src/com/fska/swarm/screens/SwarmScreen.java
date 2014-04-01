@@ -14,6 +14,12 @@ public enum SwarmScreen {
 		protected Screen getScreenInstance(){
 			return new GameScreen();
 		}
+	},
+	TMX_LEVEL {
+		@Override
+		protected Screen getScreenInstance(){
+			return new TmxLevelScreen();
+		}
 	};
 	
 	protected abstract Screen getScreenInstance();
