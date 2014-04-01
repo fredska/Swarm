@@ -7,6 +7,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
@@ -34,16 +36,16 @@ public class GameScreen implements Screen {
 	private OrthographicCamera camera;
 	private SortedSet<Entity> entities;
 	
-	/* UI Parameters */
-	private Stage resourceStage;
-	private Label woodCountLabel;
+
+	
+	private UIScreen uiScreen;
 
 	@Override
 	public void render(float delta) {
 		// Clear out the screen with a black background
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
+		moveCamera(delta);
 		entities.clear();
 		entities.addAll(MapData.getInstance().getBuildings());
 		entities.addAll(MapData.getInstance().getResources());
@@ -57,9 +59,30 @@ public class GameScreen implements Screen {
 			entity.draw(batch);
 		}
 		batch.end();
-		woodCountLabel.setText(Integer.toString(Player.getPlayers().get(1).getResourceCount(ResourceType.Wood)));
-		resourceStage.act(delta);
-		resourceStage.draw();
+		
+		
+		uiScreen.render(delta);
+	}
+	
+	private void moveCamera(float delta){
+		float cameraSpeed = 100 * delta;
+		if(Gdx.input.isKeyPressed(Keys.LEFT)){
+			camera.translate(-cameraSpeed, 0);
+		}
+		if(Gdx.input.isKeyPressed(Keys.RIGHT)){
+			camera.translate(cameraSpeed, 0);
+		}
+		if(Gdx.input.isKeyPressed(Keys.UP)){
+			camera.translate(0, cameraSpeed);
+		}if(Gdx.input.isKeyPressed(Keys.DOWN)){
+			camera.translate(0, -cameraSpeed);
+		}
+		if(Gdx.input.isButtonPressed(Buttons.MIDDLE)){
+			int getX = Gdx.input.getDeltaX();
+			int getY = Gdx.input.getDeltaY();
+			camera.translate(cameraSpeed * -getX, cameraSpeed * getY);
+		}
+		camera.update();
 	}
 
 	@Override
@@ -92,7 +115,7 @@ public class GameScreen implements Screen {
 		batch = new SpriteBatch();
 		batch.enableBlending();
 		camera = new OrthographicCamera(width, height);
-		camera.zoom = 2f;
+		camera.zoom = 1f;
 		camera.position.set(width  / 2f, height / 2f, 0);
 
 		// Initialize the mapData object and add some trees :)
@@ -120,23 +143,9 @@ public class GameScreen implements Screen {
 		//Create a new player & fill out some data on them
 		Player player1 = new Player(1, Color.BLUE);
 		
-		setupUIStage();
-	}
-	
-	private void setupUIStage(){
-		resourceStage = new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),false);
-		Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 		
-		Table resourceTable = new Table(skin);
-		woodCountLabel = new Label(Integer.toString(Player.getPlayers().get(1).getResourceCount(ResourceType.Wood)),
-				skin);
-		resourceTable.add("--- Resources ---");
-		resourceTable.row();
-		resourceTable.add("Wood ");
-		resourceTable.add(woodCountLabel);
-		Table.drawDebug(resourceStage);
-		resourceTable.setPosition(100, Gdx.graphics.getHeight()- 50);
-		resourceStage.addActor(resourceTable);
+		uiScreen = new UIScreen();
+		uiScreen.show();
 	}
 
 	@Override

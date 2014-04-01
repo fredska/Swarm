@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.fska.swarm.entity.Unit;
 
@@ -14,7 +15,7 @@ public class Planter extends Unit {
 	private TextureRegion textureRegion;
 	
 	public Planter(Vector2 position){
-		this(position, 100, 45);
+		this(position, 100, 50);
 	}
 	
 	public Planter(Vector2 position, float maxHealth, float speed) {
