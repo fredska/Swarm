@@ -40,7 +40,7 @@ public class MapData{
 		Texture.setEnforcePotImages(false);
 		tiledMap = new TiledMap();
 		TmxMapLoader loader = new TmxMapLoader();
-		tiledMap = loader.load("tmx/Test_Map_2_Layer.tmx");
+		tiledMap = loader.load("tmx/Test_Iso_Staggered.tmx");
 	}
 	
 	public TiledMap getTiledMap(){

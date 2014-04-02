@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="staggered" width="60" height="60" tilewidth="64" tileheight="32">
+ <tileset firstgid="1" name="iso-64x64-outside" tilewidth="64" tileheight="32">
+  <image source="../tileset/iso-64x64-outside.png" width="640" height="1024"/>
+ </tileset>
+ <layer name="Ground" width="60" height="60">
+  <data encoding="base64" compression="zlib">
+   eJztw8EJAAAMA6H7Z/99u0dRcNVUVVVVVVVVVVVVVVVV1VcPAq+asQ==
+  </data>
+ </layer>
+ <layer name="Level1" width="60" height="60">
+  <data encoding="base64" compression="zlib">
+   eJztz1sKgCAQQNF214Os/e+mhIKIHn8j6DkwKPozt+sAAACAP2vpBQKlfZbSSwRKx9lCc7rcW+vNam6+t2at9WY1Nk8ff3PYFrGGl/cxdIs4T721tp7uzS311t566i8DAAAAAAAAQFkboL0HoQ==
+  </data>
+ </layer>
+ <layer name="Level2" width="60" height="60">
+  <data encoding="base64" compression="zlib">
+   eJztz0EKgzAQQNFcTCvG0vvfSAMKIrarMkLmPRgSks38UgAAAPiH99MLBKrbLE8vEajuZ4bmerpn6216br62Ntl6mx6bpx9/c9QSwcYv76/QLeLc9fbaerg2Z+rtvfXQmj8lT++wDwAAAAAAAABEWwHC1Ack
+  </data>
+ </layer>
+ <layer name="Level3" width="60" height="60">
+  <data encoding="base64" compression="zlib">
+   eJztz0kKgDAQRUFv54DR+99GBQMigrsOpKtAErP6bxgAAACAP3vrAYHK+W2tRwQq95mhuTzu2XovPTcvH29r+IpY0+t/brIizrO399aqNmfqzdJaja0HAAAAAAAAAEACB5JbBd0=
+  </data>
+ </layer>
+ <layer name="Level4" width="60" height="60">
+  <data encoding="base64" compression="zlib">
+   eJztzzsOgCAURFE25t/9r0ksSKSxkxfhnGT6uSkBAAAAb468Le+MPtJAaR2xt/fmNdWt9/bIQw3Mqe5dYu987tnbe2tRmkfqHaW1mKIPAAAAAAAAAAD83AU4sAhZ
+  </data>
+ </layer>
+</map>

@@ -5,25 +5,25 @@
  </tileset>
  <layer name="Base Layer" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2klqAzEQBVDtQ+w75DIZyHCOrHOwXDE2xNCW5VaVe6BD3oPCXog26LukFqiUc/sVirilMrivipjhfzgzv9ki7toaI4/13br+fBzqvarXxjh5xE3ZD94az3tujJNFXGSdOtauyGNpmd7YlctMMnnIpC+7Tu3KeS7ymFfkDDf2biWPeUXOHKe6G9SUPJzXr9s3PsfyqHvl5VBPVT2WdhZ1z3Ep2x/D75lz4CnD+nc5t6++L52H/ui7pUfqfSSTRSny6Onl8FAuc4nkMcyifm/jukiP1JmMvQe3MpBHTmb+WueTaJETmb/s/I9lR19kvrJ9UT9PHjmRPFrjs+sdMVPXq2vPkMM8xtaczJ7PPHrz3lu/SmMM00T6odVDrXHMK/PeZA9ZnzPh3yAD4K/57hTziN4dkcc6xu7zfP7WkTzW0btfdczjq8hjLZE7b/JYT/YeovvWy5LHtshjW+SxLfLYFnlsS2tu6zvvkfvvzCNzr3qsmIcstkce22L+AQAAAAAAAAAAAAAAAAAAAAAAAACA/+oHdbVOhA==
+   eJzt2ktugzAUQFHPUckeymL6UT+L6cK6rU66h2ZQJOISYSskfoWDdJQM8btygpCHlNLA7txlWt/P1uTzrdX6/rdGj1jy+b4fvWVe9GjW4zX9vZ60uIlej1D6mSY1PTRZzzjPPp120aN9E/sjhm7ikh6HX63X8991k+/jfJ+PHjMPZ1pMO+ixbo/pHilxSKe/V3rE6GF/LKuZTTf5LG2S7w09Lnc/06WkxzDTgus0GXm2BYD98ay73hy9e4pDi3jW2CO6Xr9N7Xz1AKDU14LvAPe4J58L9FhH6ft1PW7bY67JeH3oEaLH2ESPNj3ONdGjXY+l/xLnrfXYEz1i0SMWPWLRI5a52eZn3kvOv7dex1bUnKteOltKjB6t17A1esRi/gAAAAAAAAAAAAAAAAAAAAAAAAAAwF79ABzDXVo=
   </data>
  </layer>
  <layer name="Level_2" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt2j0KwkAUhdHpswoX4g8qGJeSOvsHI6TJgGD3Lsw5cPsHH9NNawBjeXa7154ztMe2ad9p37X0orHpkUWPLHpk0SOLHllu2y7dzpUHAQAAAAAAAAD8Yak+gINvj7X6CA68kUzv5r9cEj2y6JFFjyx61Jh/7NX0qND/eff/HQAAAAAAAAAAAAAAAAAAAAAAAAAAAABI9gGOKhBf
+   eJzt2rEJAkEURdHJrcJCVkUFtRSbNrERN9hoWNFo/4M5B142wYebTmsAY7l2O9eeM7TLvN2y/bJj6UVj0yOLHln0yKJHFj2ynOYduk2VBwEAAAAAAAARXj/2rjuNFXpk0WM7zz/e6LEdPbLokenR/JdLokcWPbLokUWPGvcvuzU9KvR/3v1/BwAAAAAAAAAAAAAAAAAAAAAAAAAAAACSfQAdjRwu
   </data>
  </layer>
  <layer name="Level_3" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt0zEKgEAQA8D9mFqqT7na/4PaCAfa2OSKGUgfCKkCAAAAAAAAAAAAAADIONIF6LR0ATr3P/YrS7oID3uMxR5jsUfO9pK17JEyf2RKlgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAH45AT5YBw8=
+   eJzt0TEKgEAQBMH9mBqevsf/g5gcCJqYzAZVMPlAVwEAAAAAAAAAAAAAAOSc6QM86NHL3WNLn2A6So9O9OhFj5z9ZaP0SFk/tiRPAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAv1yeegbQ
   </data>
  </layer>
  <layer name="Level_4" width="100" height="100">
   <data encoding="base64" compression="zlib">
-   eJzt0cEJACEQBEET08NwTMh4L4H9yi5aBf0fmNYAAAAAAAAAAAAAAOBOK4g8/qhlB32pi942g/yRxx+1+KOWEdRTFwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMAZP8AsDUc=
+   eJzt0cEJwCAQRFEbi8Fy0pD12sDmKLvoe/DvA9MaAAAAAAAAAAAAAACc6fuJHP6oZQb5I88IelMX3c0ftfijlh70pC4CAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAPRbjMg5D
   </data>
  </layer>
- <layer name="Tree Layer" width="100" height="100">
+ <layer name="Tree Layer" width="100" height="100" visible="0">
   <data encoding="base64" compression="zlib">
    eJzt0bEJACEQRFGvAuONjY3tvzMR9lq4W+Q9mHzgtwYAAADcqD9/P+B1WpyFJmVE9hialDGyx9SkjJk9liZlLD0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAOAzG+u0Ah0=
   </data>
